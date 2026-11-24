@@ -12,7 +12,7 @@ export default async function SettingsPage() {
     .from("events")
     .select("id", { count: "exact", head: true })
     .eq("club_id", club.id)
-    .eq("plan_source", "claude")
+    .eq("plan_source", "ai")
     .gte("created_at", monthStartISO());
   const ai = aiEnabled();
   const used = count ?? 0;
@@ -90,7 +90,7 @@ export default async function SettingsPage() {
           {ai ? (
             <>
               <p className="mb-4 text-on-surface-variant">
-                Claude is connected. Each club can generate {MONTHLY_AI_PLANS} AI plans per calendar month; the count resets on the 1st.
+                OpenAI is connected. Each plan runs seven agents (brief analysis, weather, holidays, budget, sponsorship, logistics and review). Each club can run {MONTHLY_AI_PLANS} AI plans per calendar month; the count resets on the 1st.
               </p>
               <div className="mb-1 flex justify-between text-label-md">
                 <span>Used this month</span>
@@ -102,8 +102,8 @@ export default async function SettingsPage() {
             </>
           ) : (
             <p className="text-on-surface-variant">
-              No AI key is configured, so the planner uses Evently&apos;s built-in generator, which has no monthly limit. To have Claude write
-              plans from your brief, whoever hosts this app sets the <code className="rounded bg-surface-container-low px-1">ANTHROPIC_API_KEY</code>{" "}
+              No AI key is configured, so the planner uses Evently&apos;s built-in generator, which has no monthly limit. To turn on the AI
+              planning agents, whoever hosts this app sets the <code className="rounded bg-surface-container-low px-1">OPENAI_API_KEY</code>{" "}
               environment variable and restarts it.
             </p>
           )}

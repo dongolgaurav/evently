@@ -42,6 +42,8 @@ export type EventRow = {
   plan_source: string | null;
   plan_summary: string | null;
   plan_version: number;
+  location: string | null;
+  agent_trace: import("./agents/trace").AgentTrace | null;
   created_at: string;
   updated_at: string;
 };
