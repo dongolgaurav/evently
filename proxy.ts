@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED = ["/dashboard", "/events", "/planner", "/templates", "/team", "/settings", "/onboarding"];
+const PROTECTED = ["/dashboard", "/events", "/planner", "/templates", "/team", "/settings", "/onboarding", "/checkin"];
 
 // Refreshes the Supabase session cookie and does an optimistic signed-in check.
 // Real authorization happens in the data layer (lib/data.ts) and in Postgres RLS.
