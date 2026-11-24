@@ -44,6 +44,8 @@ export type EventRow = {
   plan_version: number;
   location: string | null;
   agent_trace: import("./agents/trace").AgentTrace | null;
+  slug: string | null;
+  public_page: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -122,3 +124,15 @@ export const STATUS_LABEL: Record<EventRow["status"], string> = {
 export const TASK_CAP = 4;
 /** AI-generated plans allowed per club per calendar month. */
 export const MONTHLY_AI_PLANS = 10;
+
+export type Rsvp = {
+  id: string;
+  event_id: string;
+  name: string;
+  email: string;
+  status: "going" | "waitlist" | "cancelled";
+  source: "public" | "manual";
+  check_in_code: string;
+  checked_in_at: string | null;
+  created_at: string;
+};

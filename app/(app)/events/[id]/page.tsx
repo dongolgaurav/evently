@@ -11,6 +11,9 @@ import { Avatar, AvatarStack, Icon, Progress } from "@/components/ui";
 import { AutoInput, AutoSelect, SubmitButton } from "@/components/client";
 import { categoryStyle } from "@/components/event-card";
 import { WorkflowTrace } from "@/components/workflow-trace";
+import { GuestsTab } from "@/components/guests-tab";
+import { qrSvg } from "@/lib/qr";
+import { siteUrl } from "@/lib/site";
 
 const TABS = [
   { key: "overview", label: "Overview & Itinerary", icon: "space_dashboard" },
@@ -18,12 +21,13 @@ const TABS = [
   { key: "roles", label: "Roles & Commitments", icon: "badge" },
   { key: "budget", label: "Budget & Expenses", icon: "account_balance_wallet" },
   { key: "run", label: "Day-of Run of Show", icon: "schedule" },
+  { key: "guests", label: "Guests & Check-in", icon: "how_to_reg" },
   { key: "workflow", label: "AI Workflow", icon: "hub" },
   { key: "details", label: "Details", icon: "tune" },
 ];
 const BAR_COLORS = ["bg-primary", "bg-tertiary-container", "bg-secondary-container", "bg-emerald-500", "bg-sky-500", "bg-amber-500"];
 
-type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ tab?: string; moved?: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ tab?: string; moved?: string; q?: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { event } = await loadEvent((await params).id);
@@ -35,7 +39,9 @@ export default async function EventPage({ params, searchParams }: Props) {
   const sp = await searchParams;
   const tab = TABS.some((t) => t.key === sp.tab) ? sp.tab! : "overview";
   const data = await loadEvent(id);
-  const { ctx, event, phases, tasks, budget, timeline, roles, members, memberById } = data;
+  const { ctx, event, phases, tasks, budget, timeline, roles, members, memberById, rsvps } = data;
+  const publicUrl = event.public_page && event.slug ? `${await siteUrl()}/e/${event.slug}` : null;
+  const qr = tab === "guests" && publicUrl ? await qrSvg(publicUrl) : null;
   const today = todayISO();
   const work = tasks.filter((t) => t.kind === "task");
   const compliance = tasks.filter((t) => t.kind === "compliance");
@@ -220,7 +226,18 @@ export default async function EventPage({ params, searchParams }: Props) {
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-tertiary-fixed text-tertiary">
             <Icon name="groups" className="text-[24px]" />
           </span>
-          <form action={updateEvent} className="min-w-0">
+{event.public_page || rsvps.length > 0 ? (
+            <Link href={`${base}?tab=guests`} className="min-w-0 hover:text-primary">
+              <div className="text-label-sm tracking-wider text-on-surface-variant uppercase">Confirmed RSVPs</div>
+              <div className="flex items-baseline gap-1">
+                <span className="font-display text-headline-sm">{event.rsvp_count}</span>
+                <span className="text-on-surface-variant">
+                  / {event.capacity} cap · {rsvps.filter((r) => r.checked_in_at).length} checked in
+                </span>
+              </div>
+            </Link>
+          ) : (
+                    <form action={updateEvent} className="min-w-0">
             <input type="hidden" name="id" value={event.id} />
             <label htmlFor="rsvp" className="text-label-sm tracking-wider text-on-surface-variant uppercase">
               Confirmed RSVPs
@@ -231,6 +248,7 @@ export default async function EventPage({ params, searchParams }: Props) {
               <SubmitButton className="btn btn-sm btn-soft ml-1">Save</SubmitButton>
             </div>
           </form>
+          )}
         </div>
       </section>
 
@@ -247,6 +265,7 @@ export default async function EventPage({ params, searchParams }: Props) {
               {t.label}
               {t.key === "tasks" && <span className="chip chip-slate">{work.length}</span>}
               {t.key === "roles" && <span className="chip chip-slate">{roles.length}</span>}
+              {t.key === "guests" && <span className="chip chip-slate">{rsvps.filter((r) => r.status === "going").length}</span>}
             </Link>
           ))}
         </nav>
@@ -497,6 +516,8 @@ export default async function EventPage({ params, searchParams }: Props) {
       {tab === "run" && <div className="mx-auto max-w-3xl">{timelineCard(true)}</div>}
 
       {tab === "workflow" && <WorkflowTrace trace={event.agent_trace} />}
+
+      {tab === "guests" && <GuestsTab event={event} rsvps={rsvps} publicUrl={publicUrl} qr={qr} q={sp.q ?? ""} />}
 
       {tab === "details" && (
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
