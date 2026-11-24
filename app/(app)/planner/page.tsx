@@ -9,7 +9,11 @@ export const metadata = { title: "AI Planner" };
 export default async function PlannerPage({ searchParams }: { searchParams: Promise<{ template?: string; concept?: string }> }) {
   const ctx = await getContext();
   const sp = await searchParams;
-  const { data } = await ctx.supabase.from("members").select("*").eq("club_id", ctx.club.id).neq("tier", "prospect").order("created_at");
+  const [{ data }, { data: lastEvent }] = await Promise.all([
+    ctx.supabase.from("members").select("*").eq("club_id", ctx.club.id).neq("tier", "prospect").order("created_at"),
+    // Prefill the city from the club's most recent event.
+    ctx.supabase.from("events").select("location").eq("club_id", ctx.club.id).not("location", "is", null).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+  ]);
   const roster = ((data ?? []) as Member[]).map((m) => ({ id: m.id, name: m.full_name, title: m.title ?? "" }));
   const t = TEMPLATES.find((x) => x.key === sp.template);
   const ai = aiEnabled();
@@ -20,6 +24,7 @@ export default async function PlannerPage({ searchParams }: { searchParams: Prom
     attendees: t?.attendees ?? 0,
     budget: t?.budget ?? 0,
     concept: t?.concept ?? (sp.concept ?? "").slice(0, 500),
+    location: (lastEvent?.location as string | undefined) ?? "",
   };
   return (
     <>
@@ -36,8 +41,8 @@ export default async function PlannerPage({ searchParams }: { searchParams: Prom
         <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 shadow-card">
           <span className={`h-2.5 w-2.5 rounded-full ${ai ? "bg-tertiary-container" : "bg-slate-400"}`} />
           <div>
-            <div className="text-label-sm">{ai ? "Claude is connected" : "Built-in generator"}</div>
-            <div className="text-body-sm text-on-surface-variant">{ai ? "Plans are written for your brief" : "Add an API key in Settings for AI plans"}</div>
+            <div className="text-label-sm">{ai ? "7 AI agents ready" : "Built-in generator"}</div>
+            <div className="text-body-sm text-on-surface-variant">{ai ? "Weather, holidays and budget checked live" : "Add an API key in Settings for AI plans"}</div>
           </div>
           <Icon name={ai ? "auto_awesome" : "tune"} className="text-[20px] text-on-surface-variant" />
         </div>

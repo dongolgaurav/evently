@@ -60,7 +60,7 @@ export const getContext = cache(async () => {
   };
 });
 
-export const aiEnabled = () => Boolean(process.env.ANTHROPIC_API_KEY);
+export const aiEnabled = () => Boolean(process.env.OPENAI_API_KEY || process.env.OPENAI_API_SECRET_KEY);
 
 export function monthStartISO() {
   const d = new Date();

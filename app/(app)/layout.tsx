@@ -26,7 +26,7 @@ async function Shell({ children }: { children: React.ReactNode }) {
   const { supabase, club, clubs, me } = await getContext();
   const [events, aiPlans, urgent] = await Promise.all([
     supabase.from("events").select("id", { count: "exact", head: true }).eq("club_id", club.id).neq("status", "completed"),
-    supabase.from("events").select("id", { count: "exact", head: true }).eq("club_id", club.id).eq("plan_source", "claude").gte("created_at", monthStartISO()),
+    supabase.from("events").select("id", { count: "exact", head: true }).eq("club_id", club.id).eq("plan_source", "ai").gte("created_at", monthStartISO()),
     supabase.from("tasks").select("id", { count: "exact", head: true }).eq("club_id", club.id).eq("done", false).lte("due_date", todayISO()),
   ]);
   const used = aiPlans.count ?? 0;

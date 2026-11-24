@@ -1,7 +1,10 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
+import { AgentRunPanel, initialRun, reduceRun, type RunState } from "@/components/agent-run";
+import type { StreamEvent } from "@/lib/agents/trace";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createPlan } from "@/lib/actions";
 import { buildTemplatePlan } from "@/lib/plan/template";
 import { CATEGORIES, type FundingSource } from "@/lib/types";
@@ -10,7 +13,7 @@ import { Avatar, Icon } from "@/components/ui";
 import { FormMessage } from "@/components/client";
 
 type RosterMember = { id: string; name: string; title: string };
-export type PlannerInitial = { title: string; category: string; timeWindow: string; attendees: number; budget: number; concept: string };
+export type PlannerInitial = { title: string; category: string; timeWindow: string; attendees: number; budget: number; concept: string; location: string };
 
 const DONUT = ["#3525cd", "#fd651e", "#6f3dd9", "#10b981", "#0ea5e9", "#f59e0b"];
 
@@ -21,6 +24,9 @@ export function PlannerForm({ roster, initial, ai }: { roster: RosterMember[]; i
   const [eventDate, setEventDate] = useState("");
   const [timeWindow, setTimeWindow] = useState(initial.timeWindow);
   const [venue, setVenue] = useState("");
+  const [location, setLocation] = useState(initial.location);
+  const [run, setRun] = useState<RunState | null>(null);
+  const router = useRouter();
   const [attendees, setAttendees] = useState(String(initial.attendees || ""));
   const [budget, setBudget] = useState(String(initial.budget || ""));
   const [concept, setConcept] = useState(initial.concept);
@@ -55,8 +61,63 @@ export function PlannerForm({ roster, initial, ai }: { roster: RosterMember[]; i
     })
     .join(", ");
 
+  /** Streams the agents' progress from /api/plan, then opens the saved event. */
+  async function generate(form: HTMLFormElement) {
+    const fd = new FormData(form);
+    const body = {
+      title, category, event_date: eventDate, time_window: timeWindow, venue, location,
+      attendees, budget, concept: String(fd.get("concept") ?? concept),
+      members: members.map((m) => ({ id: m.id, focus: m.focus })),
+      funding_sources: funding,
+    };
+    let current = initialRun();
+    setRun(current);
+    const fail = (message: string) => setRun({ ...current, phase: "error", error: message });
+    try {
+      const res = await fetch("/api/plan", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      if (!res.ok || !res.headers.get("content-type")?.includes("ndjson") || !res.body) {
+        const data = await res.json().catch(() => null);
+        return fail(data?.error ?? (res.redirected ? "Your session expired. Please sign in again." : "The planner could not start. Please try again."));
+      }
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      for (;;) {
+        const { value, done } = await reader.read();
+        buffer += decoder.decode(value, { stream: !done });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const event = JSON.parse(line) as StreamEvent;
+          current = reduceRun(current, event);
+          setRun(current);
+          if (event.type === "done") {
+            router.push(`/events/${event.eventId}?tab=workflow`);
+            return;
+          }
+        }
+        if (done) break;
+      }
+      fail(current.error ?? "The connection closed before the plan was saved. Please try again.");
+    } catch {
+      fail("The connection to the planner was lost. Please check your connection and try again.");
+    }
+  }
+
   return (
-    <form action={action} className="grid grid-cols-1 gap-6 xl:grid-cols-5">
+    <form
+      action={action}
+      onSubmit={(e) => {
+        const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+        if (submitter?.value !== "plan") return;
+        e.preventDefault();
+        if (title.trim().length < 2) return;
+        void generate(e.currentTarget);
+      }}
+      className="grid grid-cols-1 gap-6 xl:grid-cols-5"
+    >
+      {run && <AgentRunPanel run={run} onClose={() => setRun(null)} />}
       <input type="hidden" name="members" value={JSON.stringify(members.map((m) => ({ id: m.id, focus: m.focus })))} />
       <input type="hidden" name="funding_sources" value={JSON.stringify(funding)} />
       <input type="hidden" name="category" value={category} />
@@ -106,6 +167,11 @@ export function PlannerForm({ roster, initial, ai }: { roster: RosterMember[]; i
             <label>
               <span className="field-label">Time window</span>
               <input className="input" name="time_window" value={timeWindow} onChange={(e) => setTimeWindow(e.target.value)} placeholder="24h overnight, or 6:00–9:00 PM" />
+            </label>
+            <label className="sm:col-span-2">
+              <span className="field-label">City / campus location</span>
+              <input className="input" name="location" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Austin, TX" />
+              <span className="mt-1 block text-body-sm text-on-surface-variant">Used to check the weather and public holidays for your date.</span>
             </label>
             <label>
               <span className="field-label">Venue</span>
@@ -227,7 +293,7 @@ export function PlannerForm({ roster, initial, ai }: { roster: RosterMember[]; i
             <h2 className="text-headline-sm">Ready to generate your plan?</h2>
             <p className="text-on-surface-variant">
               {ai
-                ? "Claude writes the tasks, schedule, budget split and approvals. It usually takes under a minute."
+                ? "Seven AI agents analyse the brief, check the weather and holidays, test the budget, find sponsors if needed, build the plan and review it. About a minute."
                 : "Creates the tasks, schedule, budget split and approvals shown in the preview. Everything stays editable."}
             </p>
             <div className="mt-2">
@@ -235,8 +301,8 @@ export function PlannerForm({ roster, initial, ai }: { roster: RosterMember[]; i
             </div>
           </div>
           <div className="flex shrink-0 flex-col gap-2">
-            <button type="submit" name="mode" value="plan" disabled={pending} className="btn btn-accent h-12 px-6 text-body-lg">
-              <Icon name="auto_awesome" className="text-[20px]" /> {pending ? "Generating plan…" : "Generate Complete Event Plan"}
+            <button type="submit" name="mode" value="plan" disabled={pending || Boolean(run && !run.error)} className="btn btn-accent h-12 px-6 text-body-lg">
+              <Icon name="auto_awesome" className="text-[20px]" /> {run && !run.error ? "Agents working…" : "Generate Complete Event Plan"}
             </button>
             <button type="submit" name="mode" value="blank" disabled={pending} className="btn btn-sm btn-ghost">
               Or create a blank event
@@ -256,7 +322,7 @@ export function PlannerForm({ roster, initial, ai }: { roster: RosterMember[]; i
               <div className="text-label-sm tracking-wider text-on-surface-variant uppercase">Live draft preview</div>
             </div>
           </div>
-          <span className="chip chip-violet">{ai ? "Claude refines on generate" : "Updates as you type"}</span>
+          <span className="chip chip-violet">{ai ? "AI agents refine it on generate" : "Updates as you type"}</span>
         </div>
 
         <section className="card p-5">

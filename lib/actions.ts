@@ -4,10 +4,8 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
-import { CLUB_COOKIE, aiEnabled, getContext, getUser, monthStartISO } from "./data";
-import { generatePlan } from "./plan/ai";
-import type { PlanMember } from "./plan/types";
-import { MONTHLY_AI_PLANS, TASK_CAP, type FundingSource, type Member, type Task } from "./types";
+import { CLUB_COOKIE, getContext, getUser } from "./data";
+import { TASK_CAP, type FundingSource, type Member, type Task } from "./types";
 
 /**
  * `redirect` asks the client to do a full page load. Used whenever the signed-in user
@@ -124,84 +122,37 @@ export async function updateProfile(_: FormState, fd: FormData): Promise<FormSta
 }
 
 // ---------------------------------------------------------------- planner
+/** Creates an empty event. Generated plans go through the agent workflow in /api/plan. */
 export async function createPlan(_: FormState, fd: FormData): Promise<FormState> {
   const ctx = await getContext();
   const title = str(fd, "title");
-  const blank = str(fd, "mode") === "blank";
   if (title.length < 2) return { error: "Give the event a title." };
   const eventDate = /^\d{4}-\d{2}-\d{2}$/.test(str(fd, "event_date")) ? str(fd, "event_date") : null;
-  const budget = num(fd, "budget");
-
-  let picked: { id: string; focus: string }[] = [];
   let funding: FundingSource[] = [];
   try {
-    picked = JSON.parse(str(fd, "members") || "[]");
     funding = (JSON.parse(str(fd, "funding_sources") || "[]") as FundingSource[])
       .map((f) => ({ name: String(f.name ?? "").trim(), amount: Number(f.amount) || 0 }))
       .filter((f) => f.name);
   } catch {
     return { error: "The form could not be read. Please reload and try again." };
   }
-
-  const { data: roster } = await ctx.supabase.from("members").select("*").eq("club_id", ctx.club.id).neq("tier", "prospect");
-  const byId = new Map(((roster ?? []) as Member[]).map((m) => [m.id, m]));
-  const members: PlanMember[] = picked
-    .filter((p) => byId.has(p.id))
-    .map((p) => {
-      const m = byId.get(p.id)!;
-      return { id: m.id, name: m.full_name, title: m.title ?? "", focus: String(p.focus ?? "").slice(0, 80) };
-    });
-
-  const base = {
+  const payload = {
     title,
     category: str(fd, "category") || "Social",
     concept: opt(fd, "concept"),
     event_date: eventDate,
     time_window: opt(fd, "time_window"),
     venue: opt(fd, "venue"),
+    location: opt(fd, "location"),
     capacity: Math.round(num(fd, "attendees")),
-    budget_total: budget,
+    budget_total: num(fd, "budget"),
     funding_sources: funding,
+    ai_generated: false,
+    plan_source: "blank",
   };
-
-  let payload: Record<string, unknown> = { ...base, ai_generated: false, plan_source: "blank" };
-  let note: string | undefined;
-  if (!blank) {
-    if (aiEnabled()) {
-      const { count } = await ctx.supabase
-        .from("events")
-        .select("id", { count: "exact", head: true })
-        .eq("club_id", ctx.club.id)
-        .eq("plan_source", "claude")
-        .gte("created_at", monthStartISO());
-      if ((count ?? 0) >= MONTHLY_AI_PLANS) {
-        return { error: `Your club has used all ${MONTHLY_AI_PLANS} AI plans for this month. They reset on the 1st.` };
-      }
-    }
-    const result = await generatePlan({
-      title,
-      category: base.category,
-      eventDate,
-      timeWindow: base.time_window ?? "",
-      venue: base.venue ?? "",
-      attendees: base.capacity,
-      budget,
-      concept: base.concept ?? "",
-      members,
-    });
-    note = result.note;
-    payload = {
-      ...base,
-      ...result.plan,
-      plan_summary: [result.plan.summary, note].filter(Boolean).join(" "),
-      ai_generated: result.source === "claude",
-      plan_source: result.source,
-    };
-  }
-
   const { data: eventId, error } = await ctx.supabase.rpc("create_event_plan", { p_club: ctx.club.id, p: payload });
-  if (error) return { error: `The plan could not be saved: ${error.message}` };
-  await log(ctx, blank ? `created the event "${title}"` : `generated a plan for "${title}"`, String(eventId));
+  if (error) return { error: `The event could not be saved: ${error.message}` };
+  await log(ctx, `created the event "${title}"`, String(eventId));
   refresh();
   redirect(`/events/${eventId}`);
 }
@@ -216,6 +167,7 @@ export async function updateEvent(fd: FormData) {
   if (fd.has("event_date")) patch.event_date = opt(fd, "event_date");
   if (fd.has("time_window")) patch.time_window = opt(fd, "time_window");
   if (fd.has("venue")) patch.venue = opt(fd, "venue");
+  if (fd.has("location")) patch.location = opt(fd, "location");
   if (fd.has("concept")) patch.concept = opt(fd, "concept");
   if (fd.has("capacity")) patch.capacity = Math.round(num(fd, "capacity"));
   if (fd.has("rsvp_count")) patch.rsvp_count = Math.round(num(fd, "rsvp_count"));

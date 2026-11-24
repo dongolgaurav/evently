@@ -10,6 +10,7 @@ import { dueLabel, fmtDate, fmtTime, fmtWeekday, money, pct, shortName, timeAgo,
 import { Avatar, AvatarStack, Icon, Progress } from "@/components/ui";
 import { AutoInput, AutoSelect, SubmitButton } from "@/components/client";
 import { categoryStyle } from "@/components/event-card";
+import { WorkflowTrace } from "@/components/workflow-trace";
 
 const TABS = [
   { key: "overview", label: "Overview & Itinerary", icon: "space_dashboard" },
@@ -17,6 +18,7 @@ const TABS = [
   { key: "roles", label: "Roles & Commitments", icon: "badge" },
   { key: "budget", label: "Budget & Expenses", icon: "account_balance_wallet" },
   { key: "run", label: "Day-of Run of Show", icon: "schedule" },
+  { key: "workflow", label: "AI Workflow", icon: "hub" },
   { key: "details", label: "Details", icon: "tune" },
 ];
 const BAR_COLORS = ["bg-primary", "bg-tertiary-container", "bg-secondary-container", "bg-emerald-500", "bg-sky-500", "bg-amber-500"];
@@ -172,9 +174,9 @@ export default async function EventPage({ params, searchParams }: Props) {
             <h1 className="text-headline-lg tracking-tight">{event.title}</h1>
             <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-on-surface-variant">
               Organised by <b className="text-on-surface">{ctx.club.name}</b>
-              <span className={`chip ${event.plan_source === "claude" ? "chip-violet" : "chip-slate"}`}>
+              <span className={`chip ${event.plan_source === "ai" ? "chip-violet" : "chip-slate"}`}>
                 <Icon name="auto_awesome" className="text-[13px]" />
-                {event.plan_source === "claude" ? "AI-generated plan" : event.plan_source === "template" ? "Generated plan" : "Manual plan"}
+                {event.plan_source === "ai" ? "Planned by AI agents" : event.plan_source === "template" ? "Generated plan" : "Manual plan"}
               </span>
               <span>Updated {timeAgo(event.updated_at)}</span>
             </p>
@@ -494,6 +496,8 @@ export default async function EventPage({ params, searchParams }: Props) {
 
       {tab === "run" && <div className="mx-auto max-w-3xl">{timelineCard(true)}</div>}
 
+      {tab === "workflow" && <WorkflowTrace trace={event.agent_trace} />}
+
       {tab === "details" && (
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
           <section className="card p-6 xl:col-span-2">
@@ -523,6 +527,10 @@ export default async function EventPage({ params, searchParams }: Props) {
               <label>
                 <span className="field-label">Venue</span>
                 <input className="input" name="venue" defaultValue={event.venue ?? ""} />
+              </label>
+              <label>
+                <span className="field-label">City / campus location</span>
+                <input className="input" name="location" defaultValue={event.location ?? ""} placeholder="Austin, TX" />
               </label>
               <label>
                 <span className="field-label">Capacity</span>
