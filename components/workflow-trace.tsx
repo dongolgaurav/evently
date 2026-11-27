@@ -155,6 +155,7 @@ export function WorkflowTrace({ trace }: { trace: AgentTrace | null }) {
               </div>
             ))}
           </dl>
+          {trace.note && <p className="mt-3 rounded-lg bg-tertiary-fixed/60 p-2 text-body-sm">{trace.note}</p>}
           <p className="mt-3 text-body-sm text-on-surface-variant">
             Orchestrated with LangGraph · model {trace.model}. Data from Open-Meteo and Nager.Date.
           </p>

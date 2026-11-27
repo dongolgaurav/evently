@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { categoryImage } from "@/lib/images";
 import { getContext } from "@/lib/data";
 import { TEMPLATES } from "@/lib/templates";
 import { money } from "@/lib/format";
@@ -16,7 +18,9 @@ export default async function TemplatesPage() {
         {TEMPLATES.map((t) => {
           const style = categoryStyle(t.category);
           return (
-            <article key={t.key} className="card flex flex-col p-6 transition-shadow hover:shadow-lift">
+            <article key={t.key} className="card flex flex-col overflow-hidden transition-shadow hover:shadow-lift">
+              <Image src={categoryImage(t.category)} alt="" placeholder="blur" sizes="(min-width: 1280px) 400px, (min-width: 768px) 50vw, 100vw" className="aspect-[16/9] h-auto w-full object-cover" />
+              <div className="flex flex-1 flex-col p-6">
               <div className="mb-3 flex items-center gap-3">
                 <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${style.box}`}>
                   <Icon name={t.icon} className="text-[22px]" />
@@ -42,6 +46,7 @@ export default async function TemplatesPage() {
               <Link href={`/planner?template=${t.key}`} className="btn btn-primary w-full">
                 Use this template <Icon name="arrow_forward" className="text-[18px]" />
               </Link>
+              </div>
             </article>
           );
         })}

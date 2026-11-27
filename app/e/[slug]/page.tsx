@@ -1,5 +1,7 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import { notFound } from "next/navigation";
+import { categoryImage } from "@/lib/images";
 import { createClient } from "@/lib/supabase/server";
 import { rsvpToEvent } from "@/lib/rsvp-actions";
 import { fmtTime, fmtWeekday, pct } from "@/lib/format";
@@ -58,8 +60,9 @@ async function EventDetails({ params }: Props) {
   return (
     <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-5">
       <article className="space-y-6 lg:col-span-3">
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-container via-tertiary-container to-primary p-6 text-white shadow-xl sm:p-8">
-          <div className="pointer-events-none absolute -top-16 -right-16 h-64 w-64 rounded-full bg-secondary-container/25 blur-3xl" />
+        <section className="relative overflow-hidden rounded-2xl bg-primary p-6 text-white shadow-xl sm:p-8">
+          <Image src={categoryImage(e.category)} alt="" fill priority placeholder="blur" sizes="(min-width: 1024px) 600px, 100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/90 via-primary/75 to-tertiary/60" />
           <div className="relative">
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-label-sm">

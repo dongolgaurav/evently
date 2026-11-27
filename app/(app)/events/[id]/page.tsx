@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { categoryImage } from "@/lib/images";
 import { loadEvent } from "@/lib/event-data";
 import {
   addBudgetItem, addPhase, addTask, addTimelineItem, deleteBudgetItem, deleteEvent, deletePhase, deleteTask,
@@ -9,7 +11,6 @@ import { CATEGORIES, STATUS_LABEL, type Member, type Phase, type Task } from "@/
 import { dueLabel, fmtDate, fmtTime, fmtWeekday, money, pct, shortName, timeAgo, todayISO } from "@/lib/format";
 import { Avatar, AvatarStack, Icon, Progress } from "@/components/ui";
 import { AutoInput, AutoSelect, SubmitButton } from "@/components/client";
-import { categoryStyle } from "@/components/event-card";
 import { WorkflowTrace } from "@/components/workflow-trace";
 import { GuestsTab } from "@/components/guests-tab";
 import { qrSvg } from "@/lib/qr";
@@ -50,7 +51,6 @@ export default async function EventPage({ params, searchParams }: Props) {
   const overdue = tasks.filter((t) => !t.done && t.due_date && t.due_date < today).length;
   const spent = budget.reduce((s, b) => s + b.spent, 0);
   const allocated = budget.reduce((s, b) => s + b.allocated, 0);
-  const style = categoryStyle(event.category);
   const base = `/events/${event.id}`;
   const health = event.status === "completed" ? "Completed" : overdue ? "At Risk" : tasks.length && readiness === 100 ? "Ready" : "On Track";
   const team = [...new Set([...roles.map((r) => r.member_id), ...tasks.map((t) => t.assignee_id).filter(Boolean)] as string[])]
@@ -173,16 +173,14 @@ export default async function EventPage({ params, searchParams }: Props) {
     <>
       <div className="flex flex-col justify-between gap-4 pt-6 pb-6 lg:flex-row lg:items-start">
         <div className="flex min-w-0 items-start gap-4">
-          <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${style.box}`}>
-            <Icon name={style.icon} className="text-[30px]" />
-          </span>
+          <Image src={categoryImage(event.category)} alt="" priority placeholder="blur" sizes="128px" className="h-20 w-28 shrink-0 rounded-2xl object-cover shadow-card" />
           <div className="min-w-0">
             <h1 className="text-headline-lg tracking-tight">{event.title}</h1>
             <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-on-surface-variant">
               Organised by <b className="text-on-surface">{ctx.club.name}</b>
-              <span className={`chip ${event.plan_source === "ai" ? "chip-violet" : "chip-slate"}`}>
+              <span className={`chip ${event.plan_source?.startsWith("ai") ? "chip-violet" : "chip-slate"}`}>
                 <Icon name="auto_awesome" className="text-[13px]" />
-                {event.plan_source === "ai" ? "Planned by AI agents" : event.plan_source === "template" ? "Generated plan" : "Manual plan"}
+                {event.plan_source?.startsWith("ai") ? "Planned by AI agents" : event.plan_source === "template" ? "Generated plan" : "Manual plan"}
               </span>
               <span>Updated {timeAgo(event.updated_at)}</span>
             </p>

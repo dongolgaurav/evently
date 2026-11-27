@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { categoryImage } from "@/lib/images";
 import type { EventSummary } from "@/lib/queries";
 import { STATUS_LABEL } from "@/lib/types";
 import { fmtDate, money } from "@/lib/format";
@@ -20,15 +22,12 @@ export function statusChip(status: EventSummary["status"]) {
 }
 
 export function EventCard({ event }: { event: EventSummary }) {
-  const style = categoryStyle(event.category);
   const tone = event.readiness >= 90 ? "green" : event.readiness < 40 ? "violet" : "primary";
   return (
     <article className="card p-6 transition-shadow hover:shadow-lift">
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-start gap-3">
-          <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${style.box}`}>
-            <Icon name={style.icon} className="text-[22px]" />
-          </span>
+          <Image src={categoryImage(event.category)} alt="" placeholder="blur" sizes="96px" className="h-14 w-20 shrink-0 rounded-xl object-cover" />
           <div className="min-w-0">
             <div className="mb-1 flex flex-wrap items-center gap-1.5">
               {statusChip(event.status)}

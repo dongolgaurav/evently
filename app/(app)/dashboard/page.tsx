@@ -5,6 +5,8 @@ import { dueLabel, daysUntil, firstName, fmtDate, money, pct, timeAgo, todayISO 
 import type { Activity } from "@/lib/types";
 import { EmptyState, Icon, PageHeader, Progress } from "@/components/ui";
 import { EventCard, statusChip } from "@/components/event-card";
+import { StateForm, SubmitButton } from "@/components/client";
+import { loadDemoData } from "@/lib/actions";
 
 export const metadata = { title: "Dashboard" };
 
@@ -153,6 +155,13 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               <Link href="/planner" className="btn btn-primary">
                 Plan your first event
               </Link>
+              {ctx.me.is_admin && (
+                <StateForm action={loadDemoData}>
+                  <SubmitButton className="btn btn-soft" pendingText="Loading demo…">
+                    <Icon name="rocket_launch" className="text-[18px] text-tertiary" /> Load demo events
+                  </SubmitButton>
+                </StateForm>
+              )}
               <Link href="/templates" className="btn btn-soft">
                 Browse templates
               </Link>

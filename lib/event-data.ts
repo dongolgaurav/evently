@@ -13,7 +13,7 @@ export async function loadEvent(id: string) {
     supabase.from("phases").select("*").eq("event_id", id).order("position"),
     supabase.from("tasks").select("*").eq("event_id", id).order("position").order("created_at"),
     supabase.from("budget_items").select("*").eq("event_id", id).order("position"),
-    supabase.from("timeline_items").select("*").eq("event_id", id).order("start_time"),
+    supabase.from("timeline_items").select("*").eq("event_id", id).order("position").order("start_time"),
     supabase.from("event_roles").select("*").eq("event_id", id),
     supabase.from("members").select("*").eq("club_id", club.id).neq("tier", "prospect").order("created_at"),
     supabase.from("rsvps").select("*").eq("event_id", id).order("created_at"),

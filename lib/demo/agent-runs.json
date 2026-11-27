@@ -1,0 +1,1185 @@
+[
+ {
+  "title": "Outdoor Movie Night on the Quad",
+  "category": "Social",
+  "concept": "Outdoor movie night on the quad for first-years with an inflatable screen, popcorn and hot chocolate. Blankets and lawn seating, a short welcome from the club before the film.",
+  "event_date": "2026-12-11",
+  "time_window": "7:00–10:00 PM",
+  "venue": "Main Quad",
+  "location": "Austin, TX",
+  "capacity": 150,
+  "budget_total": 400,
+  "funding_sources": [],
+  "plan_summary": "The plan is well covered: all team members are assigned, the run of show includes setup and cleanup, and the food-safety/dietary work is explicitly handled. The main risk is attendance, since the date falls in a high-conflict finals window, but the plan does account for that with targeted promotion.",
+  "agent_trace": {
+   "ms": 121538,
+   "model": "gpt-5.4-mini",
+   "steps": [
+    {
+     "ms": 1764,
+     "agent": "brief",
+     "details": {
+      "goals": [
+       "Create a fun social event for first-year students",
+       "Screen a movie outdoors on the quad",
+       "Provide simple refreshments and comfortable seating",
+       "Welcome attendees with a short club introduction before the film"
+      ],
+      "must_haves": [
+       "Main Quad outdoor venue",
+       "Inflatable screen",
+       "Movie screening",
+       "Popcorn",
+       "Hot chocolate",
+       "Blankets",
+       "Lawn seating",
+       "Short welcome from the club before the film"
+      ],
+      "open_questions": [
+       "Which movie will be shown?",
+       "Is there a rain/weather backup plan?",
+       "Are there any needed AV, power, or permissions arrangements for the quad?"
+      ]
+     },
+     "summary": "Outdoor event for first-years, with food."
+    },
+    {
+     "ms": 12912,
+     "agent": "weather",
+     "tools": [
+      {
+       "ok": true,
+       "name": "geocode_location",
+       "input": {
+        "query": "Austin, TX"
+       },
+       "output": {
+        "name": "Austin",
+        "region": "Texas",
+        "country": "United States",
+        "latitude": 30.26715,
+        "timezone": "America/Chicago",
+        "longitude": -97.74306,
+        "country_code": "US"
+       }
+      },
+      {
+       "ok": true,
+       "name": "get_weather",
+       "input": {
+        "date": "2026-12-11",
+        "latitude": 30.26715,
+        "longitude": -97.74306
+       },
+       "output": {
+        "date": "2026-12-11",
+        "mode": "forecast",
+        "precip_mm": 0,
+        "temp_max_c": 17,
+        "temp_min_c": 11.7,
+        "wind_max_kmh": 23.2,
+        "precip_probability_pct": 16
+       }
+      }
+     ],
+     "details": {
+      "data": {
+       "date": "2026-12-11",
+       "mode": "forecast",
+       "precip_mm": 0,
+       "temp_max_c": 17,
+       "temp_min_c": 11.7,
+       "wind_max_kmh": 23.2,
+       "precip_probability_pct": 16
+      },
+      "place": "Austin, Texas",
+      "recommendations": [
+       "Proceed with the outdoor event as planned.",
+       "No rain backup is necessary based on this forecast.",
+       "Bring light layers for the cooler morning and evening temperatures."
+      ]
+     },
+     "summary": "Austin, TX on 2026-12-11 is forecast to be mild, with a high of 17°C, a low of 11.7°C, a 16% chance of precipitation, 0 mm expected rain, and winds up to 23.2 km/h. Risk: low."
+    },
+    {
+     "ms": 2010,
+     "agent": "calendar",
+     "tools": [
+      {
+       "ok": true,
+       "name": "get_public_holidays",
+       "input": {
+        "date": "2026-12-11",
+        "country": "US"
+       },
+       "output": []
+      }
+     ],
+     "details": {
+      "advice": "If possible, avoid this date. A weekday earlier in the term or after finals would likely draw better attendance, especially for first-years who may be busy with end-of-semester obligations.",
+      "holidays": [],
+      "conflicts": [
+       "Early-to-mid December is a common finals period, so many students may be studying or taking exams instead of attending events.",
+       "Friday can reduce attendance for campus events because students often leave or shift plans at the end of the week."
+      ]
+     },
+     "summary": "Friday 2026-12-11: no public holidays within a week. Risk: high."
+    },
+    {
+     "ms": 4209,
+     "agent": "budget",
+     "details": {
+      "allocation": [
+       {
+        "amount": 120,
+        "category": "Inflatable screen rental"
+       },
+       {
+        "amount": 60,
+        "category": "AV / power / permissions"
+       },
+       {
+        "amount": 80,
+        "category": "Popcorn and hot chocolate"
+       },
+       {
+        "amount": 35,
+        "category": "Blankets"
+       },
+       {
+        "amount": 25,
+        "category": "Lawn seating / mats"
+       },
+       {
+        "amount": 20,
+        "category": "Marketing / signage"
+       },
+       {
+        "amount": 20,
+        "category": "Weather comfort / backup tent or indoor fallback supplies"
+       },
+       {
+        "amount": 40,
+        "category": "Contingency"
+       }
+      ],
+      "savings_ideas": [
+       "Ask campus media services or a partner club to lend the projector, speakers, or screen at no cost.",
+       "Seek food/drink sponsorships or bulk donations so the refreshments budget can cover more attendees.",
+       "Use club-owned blankets and encourage attendees to bring their own, freeing cash for a stronger weather backup or extra promotion."
+      ]
+     },
+     "summary": "$2.67/attendee vs ~$10 benchmark → lean. At $400 for about 150 attendees, the budget is only about $2.67 per person, which is far below the roughly $10 per person benchmark for a comfortable Social event. That gap, plus the high calendar risk from finals week, means outside funding or in-kind support would materially improve attendance, comfort, and the overall experience."
+    },
+    {
+     "ms": 4117,
+     "agent": "sponsor",
+     "details": {
+      "targets": [
+       {
+        "why": "This event is aimed at first-years and supports welcome, belonging, and retention, which makes it a strong fit for student-success funding.",
+        "type": "Campus department or student affairs office",
+        "ask_usd": 400,
+        "example": "First-Year Experience office or student engagement office"
+       },
+       {
+        "why": "Hot chocolate and a cozy evening social are a natural match for a neighborhood café that wants visibility with students.",
+        "type": "Local coffee shop or café near campus",
+        "ask_usd": 350,
+        "example": "An independent coffee shop, bakery, or café in the university area"
+       },
+       {
+        "why": "They often support broad student life programming and can help cover event essentials like the screen rental, AV, and refreshments.",
+        "type": "Alumni group or student government fund",
+        "ask_usd": 350,
+        "example": "Alumni association chapter or student government programming fund"
+       }
+      ]
+     },
+     "summary": "Funding gap ≈ $1100. Targets: Campus department or student affairs office, Local coffee shop or café near campus, Alumni group or student government fund. Outreach email drafted."
+    },
+    {
+     "ms": 35869,
+     "pass": 1,
+     "agent": "scheduler",
+     "details": {
+      "phases": [
+       "Phase 1: 4 Weeks Out (4)",
+       "Phase 2: 3 Weeks Out (4)",
+       "Phase 3: 2 Weeks Out (5)",
+       "Phase 4: 1 Week Out (3)",
+       "Phase 5: Wrap-Up (2)"
+      ]
+     },
+     "summary": "18 tasks in 5 phases, 9-slot run of show, 5 approvals, 6 roles."
+    },
+    {
+     "ms": 2580,
+     "pass": 1,
+     "agent": "reviewer",
+     "details": {
+      "issues": [
+       "Food is being served, but the plan has no explicit assigned food-safety or dietary-restrictions task. The compliance note mentions food approval, but a responsible person and concrete task are missing."
+      ]
+     },
+     "summary": "Sent back (score 6/10). Food is being served, but the plan has no explicit assigned food-safety or dietary-restrictions task. The compliance note mentions food approval, but a responsible person and concrete task are missing."
+    },
+    {
+     "ms": 56501,
+     "pass": 2,
+     "agent": "scheduler",
+     "details": {
+      "phases": [
+       "Phase 1: 4 Weeks Out (4)",
+       "Phase 2: 3 Weeks Out (4)",
+       "Phase 3: 1 Week Out (4)",
+       "Phase 4: 2-3 Days Out (4)",
+       "Wrap-Up: 1-3 Days After (3)"
+      ]
+     },
+     "summary": "Revised draft: 19 tasks in 5 phases, 9-slot run of show, 4 approvals, 6 roles."
+    },
+    {
+     "ms": 1542,
+     "pass": 2,
+     "agent": "reviewer",
+     "details": {
+      "issues": []
+     },
+     "summary": "Approved (score 9/10). The plan is well covered: all team members are assigned, the run of show includes setup and cleanup, and the food-safety/dietary work is explicitly handled. The main risk is attendance, since the date falls in a high-conflict finals window, but the plan does account for that with targeted promotion."
+    }
+   ],
+   "engine": "langgraph",
+   "skipped": [],
+   "branches": [
+    {
+     "at": "brief",
+     "to": "weather",
+     "label": "outdoor event",
+     "reason": "Held outside, so weather could disrupt it. Checking the forecast."
+    },
+    {
+     "at": "budget",
+     "to": "sponsor",
+     "label": "lean budget",
+     "reason": "$2.67 per attendee is below the ~$10 benchmark, so a sponsorship plan is added."
+    },
+    {
+     "at": "reviewer",
+     "to": "scheduler",
+     "label": "revision requested",
+     "reason": "Food is being served, but the plan has no explicit assigned food-safety or dietary-restrictions task. The compliance note mentions food approval, but a responsible person and concrete task are missing."
+    },
+    {
+     "at": "reviewer",
+     "to": "end",
+     "label": "approved",
+     "reason": "The plan covers the risks the other agents found."
+    }
+   ],
+   "sponsorship": {
+    "targets": [
+     {
+      "why": "This event is aimed at first-years and supports welcome, belonging, and retention, which makes it a strong fit for student-success funding.",
+      "type": "Campus department or student affairs office",
+      "ask_usd": 400,
+      "example": "First-Year Experience office or student engagement office"
+     },
+     {
+      "why": "Hot chocolate and a cozy evening social are a natural match for a neighborhood café that wants visibility with students.",
+      "type": "Local coffee shop or café near campus",
+      "ask_usd": 350,
+      "example": "An independent coffee shop, bakery, or café in the university area"
+     },
+     {
+      "why": "They often support broad student life programming and can help cover event essentials like the screen rental, AV, and refreshments.",
+      "type": "Alumni group or student government fund",
+      "ask_usd": 350,
+      "example": "Alumni association chapter or student government programming fund"
+     }
+    ],
+    "email_body": "Hi [Sponsor name],\n\nI’m reaching out from our student club to ask if you’d consider supporting our Outdoor Movie Night on the Quad for first-year students. We’re planning an evening of community-building with an inflatable screen, popcorn, hot chocolate, blankets, and a short welcome from our club before the film.\n\nWe’d love to partner with you as a sponsor and can offer recognition in our event promotion and at the event itself. Any support would make a big difference in helping us create a warm, welcoming experience for new students.\n\nIf you’re open to it, I’d be happy to share more details or discuss a sponsorship amount that works for you.\n\nThank you for your time and consideration,\n[Your name]",
+    "email_subject": "Sponsorship Request: First-Year Outdoor Movie Night on the Quad",
+    "funding_gap_usd": 1100
+   }
+  },
+  "roles": [
+   {
+    "member": "Maya Lin",
+    "responsibility": "Overall event lead and welcome remarks"
+   },
+   {
+    "member": "Devon Taylor",
+    "responsibility": "Volunteer staffing, setup, and cleanup"
+   },
+   {
+    "member": "Liam Zhang",
+    "responsibility": "Promotion, reminders, and attendance push"
+   },
+   {
+    "member": "Samira Khan",
+    "responsibility": "Food setup, labels, and guest hospitality"
+   },
+   {
+    "member": "Chloe Vance",
+    "responsibility": "Budget, sponsor outreach, and purchase tracking"
+   },
+   {
+    "member": "Jordan Reed",
+    "responsibility": "Venue, AV, power, and run-of-show logistics"
+   }
+  ],
+  "budget": [
+   {
+    "category": "Inflatable screen rental",
+    "amount": 120
+   },
+   {
+    "category": "AV / power / permissions",
+    "amount": 60
+   },
+   {
+    "category": "Popcorn and hot chocolate",
+    "amount": 80
+   },
+   {
+    "category": "Blankets",
+    "amount": 35
+   },
+   {
+    "category": "Lawn seating / mats",
+    "amount": 25
+   },
+   {
+    "category": "Marketing / signage",
+    "amount": 20
+   },
+   {
+    "category": "Weather comfort / backup tent or indoor fallback supplies",
+    "amount": 20
+   },
+   {
+    "category": "Contingency",
+    "amount": 40
+   }
+  ],
+  "timeline": [
+   {
+    "time": "17:30",
+    "title": "Setup crew arrives",
+    "detail": "Unload screen, projector, sound gear, blankets, seating, and food supplies at the Main Quad.",
+    "location": "Main Quad"
+   },
+   {
+    "time": "18:00",
+    "title": "Inflate screen and test AV",
+    "detail": "Power up the projector, test audio, and verify the screen is stable and weighted for the wind.",
+    "location": "Main Quad"
+   },
+   {
+    "time": "18:25",
+    "title": "Set up seating and check-in",
+    "detail": "Lay out blankets and lawn seating, place signage, and open the check-in table.",
+    "location": "Main Quad entrance"
+   },
+   {
+    "time": "18:45",
+    "title": "Food station prep",
+    "detail": "Warm hot chocolate, set out popcorn, and place allergy/ingredient labels in view.",
+    "location": "Food table"
+   },
+   {
+    "time": "19:00",
+    "title": "Doors open",
+    "detail": "Welcome attendees, confirm headcount, and point students to seating and refreshments.",
+    "location": "Main Quad"
+   },
+   {
+    "time": "19:10",
+    "title": "Club welcome",
+    "detail": "Maya gives the short introduction and welcomes first-year students before the film.",
+    "location": "Screen area"
+   },
+   {
+    "time": "19:20",
+    "title": "Movie starts",
+    "detail": "Begin the screening and keep a volunteer available for sound, light, and crowd issues.",
+    "location": "Main Quad"
+   },
+   {
+    "time": "21:30",
+    "title": "Film ends and closing remarks",
+    "detail": "Thank the crowd, remind attendees to clean up their area, and start shutting down equipment.",
+    "location": "Screen area"
+   },
+   {
+    "time": "22:00",
+    "title": "Cleanup complete",
+    "detail": "Collect trash, pack remaining supplies, and load out all borrowed or rented items.",
+    "location": "Main Quad"
+   }
+  ],
+  "phases": [
+   {
+    "name": "Phase 1: 4 Weeks Out",
+    "subtitle": "Secure the quad, movie, and funding targets",
+    "tasks": [
+     {
+      "title": "Reserve Main Quad and confirm power access",
+      "detail": "Lock in the Main Quad reservation for 2026-12-11, confirm the nearest approved power source, and check any noise or access limits for an 8–10 PM outdoor screening.",
+      "member": "Jordan Reed",
+      "days_before": 28,
+      "priority": true
+     },
+     {
+      "title": "Pick the film and verify screening rights",
+      "detail": "Choose a movie that works for first-years and confirm the club can publicly screen it on the quad, including any rental or licensing needs.",
+      "member": "Maya Lin",
+      "days_before": 28,
+      "priority": true
+     },
+     {
+      "title": "Build sponsor ask list and packet",
+      "detail": "Prepare a simple funding ask for the campus department, student government/alumni group, and nearby café, with a clear request tied to the $1,100 gap.",
+      "member": "Chloe Vance",
+      "days_before": 28,
+      "priority": true
+     },
+     {
+      "title": "Recruit volunteers for setup, food, and cleanup",
+      "detail": "Start a sign-up sheet for at least the setup crew, check-in helpers, food station support, and teardown team for a 150-person crowd.",
+      "member": "Devon Taylor",
+      "days_before": 28,
+      "priority": false
+     }
+    ]
+   },
+   {
+    "name": "Phase 2: 3 Weeks Out",
+    "subtitle": "Lock food plan and promote to first-years",
+    "tasks": [
+     {
+      "title": "Launch finals-aware promotion to first-years",
+      "detail": "Promote the event through dorm RAs, first-year group chats, and club socials, framing it as a low-effort study break because early December and Friday timing may reduce turnout.",
+      "member": "Liam Zhang",
+      "days_before": 21,
+      "priority": true
+     },
+     {
+      "title": "Collect dietary needs and allergy notes",
+      "detail": "Ask attendees and volunteers about allergies or dietary restrictions, then decide how popcorn ingredients, butter, and hot chocolate add-ins will be labeled and separated.",
+      "member": "Samira Khan",
+      "days_before": 21,
+      "priority": true
+     },
+     {
+      "title": "Confirm food-serving approval and safe setup",
+      "detail": "Check what the club needs to serve popcorn and hot chocolate on the quad, including sanitation, cups, serving tools, and any campus food-service clearance.",
+      "member": "Samira Khan",
+      "days_before": 21,
+      "priority": true
+     },
+     {
+      "title": "Trim purchases to stay inside the lean budget",
+      "detail": "Compare expected headcount against the $400 cap and decide where to save if sign-ups run light, especially on food quantity and blanket count.",
+      "member": "Chloe Vance",
+      "days_before": 21,
+      "priority": false
+     }
+    ]
+   },
+   {
+    "name": "Phase 3: 1 Week Out",
+    "subtitle": "Confirm logistics and volunteer coverage",
+    "tasks": [
+     {
+      "title": "Finalize welcome script and film intro",
+      "detail": "Write a short club welcome for the start of the night, including a quick introduction for first-years before the movie begins.",
+      "member": "Maya Lin",
+      "days_before": 7,
+      "priority": true
+     },
+     {
+      "title": "Confirm sponsor support and pickup plan",
+      "detail": "Follow up on sponsor asks, confirm any donated coffee shop supplies or cash support, and plan who will pick up or receive each item.",
+      "member": "Chloe Vance",
+      "days_before": 7,
+      "priority": true
+     },
+     {
+      "title": "Test AV, power, and screen stability",
+      "detail": "Run through the projector, speakers, and inflatable screen setup, including cords, anchors, and weights for the expected evening wind.",
+      "member": "Jordan Reed",
+      "days_before": 7,
+      "priority": true
+     },
+     {
+      "title": "Confirm volunteer stations and call times",
+      "detail": "Assign specific people to check-in, food line, roaming support, and cleanup so the team is ready for a 150-person outdoor crowd.",
+      "member": "Devon Taylor",
+      "days_before": 7,
+      "priority": false
+     }
+    ]
+   },
+   {
+    "name": "Phase 4: 2-3 Days Out",
+    "subtitle": "Final prep and attendee reminders",
+    "tasks": [
+     {
+      "title": "Send final reminder to first-years",
+      "detail": "Post one last reminder with the start time, Main Quad location, and a note to bring a blanket or light jacket for the cooler evening.",
+      "member": null,
+      "days_before": 2,
+      "priority": true
+     },
+     {
+      "title": "Buy and pack food service supplies",
+      "detail": "Purchase and pack popcorn, hot chocolate mix, cups, stirrers, napkins, ingredient labels, hand sanitizer, and trash bags for the food table.",
+      "member": "Samira Khan",
+      "days_before": 2,
+      "priority": true
+     },
+     {
+      "title": "Print signage and check-in materials",
+      "detail": "Prepare entrance signs, food labels, the check-in sheet, and a simple seating map so guests can find the lawn area quickly.",
+      "member": "Devon Taylor",
+      "days_before": 2,
+      "priority": false
+     },
+     {
+      "title": "Reconfirm venue access and campus contacts",
+      "detail": "Double-check the access window for the quad, the exact outlet location, and the on-call campus contact in case anything changes at setup.",
+      "member": "Jordan Reed",
+      "days_before": 2,
+      "priority": true
+     }
+    ]
+   },
+   {
+    "name": "Wrap-Up: 1-3 Days After",
+    "subtitle": "Return rentals, close out costs, and thank everyone",
+    "tasks": [
+     {
+      "title": "Return rentals and strike equipment",
+      "detail": "Load out the projector gear, inflatable screen, cords, and any borrowed items, then confirm everything is returned in good condition.",
+      "member": "Jordan Reed",
+      "days_before": -1,
+      "priority": true
+     },
+     {
+      "title": "Reconcile receipts and close the budget",
+      "detail": "Match all purchases and sponsor support against the $400 budget, note the actual spend, and flag any reimbursement issues.",
+      "member": "Chloe Vance",
+      "days_before": -2,
+      "priority": true
+     },
+     {
+      "title": "Send thank-yous and collect feedback",
+      "detail": "Thank attendees, volunteers, and sponsors, then send a short feedback form to learn whether the first-year turnout and format worked.",
+      "member": null,
+      "days_before": -3,
+      "priority": false
+     }
+    ]
+   }
+  ],
+  "compliance": [
+   {
+    "title": "Outdoor space reservation and sound approval",
+    "detail": "Confirm the Main Quad booking, access hours, and any limits on amplified sound or event duration for a nighttime screening.",
+    "reference": "Facilities / Event Scheduling"
+   },
+   {
+    "title": "AV and power use on the quad",
+    "detail": "Check whether the projector, speakers, extension cords, and screen anchoring are allowed and whether the outlet location needs approval or staff support.",
+    "reference": "Facilities or IT/AV Services"
+   },
+   {
+    "title": "Food service and hot beverage handling",
+    "detail": "Verify what the club must do to serve popcorn and hot chocolate safely, including sanitation, ingredient labeling, and any approval for student-run food service.",
+    "reference": "Student Affairs / Campus Dining"
+   },
+   {
+    "title": "Student event registration and safety contact",
+    "detail": "Check whether the club must register a 150-person outdoor event and provide a contact list or basic safety plan for the evening.",
+    "reference": "Student Activities / Student Engagement"
+   }
+  ]
+ },
+ {
+  "title": "Fall Hackathon 2026",
+  "category": "Academic/Tech",
+  "concept": "A 24-hour hackathon with three keynote workshops, mentor office hours, a midnight pizza run, sponsor booths and project demos with judging. Needs overnight building access, strong Wi-Fi and enough power for every team.",
+  "event_date": "2027-01-29",
+  "time_window": "24h overnight, Fri 6 PM to Sat 6 PM",
+  "venue": "Engineering Building, Hall B",
+  "location": "Austin, TX",
+  "capacity": 180,
+  "budget_total": 2500,
+  "funding_sources": [
+   {
+    "name": "Student Union Grant",
+    "amount": 1500
+   },
+   {
+    "name": "Tech company sponsorship",
+    "amount": 1000
+   }
+  ],
+  "plan_summary": "The plan is well structured across prep phases, event-day operations, and wrap-up, with all major event needs assigned and scheduled. Main residual risk is execution under a lean budget, especially around sponsor fundraising and overnight operational coverage, but the plan does address those areas.",
+  "agent_trace": {
+   "ms": 80510,
+   "model": "gpt-5.4-mini",
+   "steps": [
+    {
+     "ms": 3028,
+     "agent": "brief",
+     "details": {
+      "goals": [
+       "Run a 24-hour hackathon with workshops, mentoring, and demos",
+       "Provide overnight space with reliable Wi‑Fi and power for teams",
+       "Host sponsor booths, project judging, and a final demo session"
+      ],
+      "must_haves": [
+       "Overnight access to the Engineering Building, Hall B",
+       "Strong Wi‑Fi throughout the venue",
+       "Enough power outlets/charging for every team",
+       "Three keynote workshops",
+       "Mentor office hours",
+       "Midnight pizza run",
+       "Sponsor booths",
+       "Project demos with judging"
+      ],
+      "open_questions": [
+       "How many sponsor booths and teams should the space be planned for?",
+       "Who will serve as judges and mentors?",
+       "What are the food and refreshment details beyond the midnight pizza run?"
+      ]
+     },
+     "summary": "Indoor event for student hackers and project teams, overnight, with food."
+    },
+    {
+     "ms": 3654,
+     "agent": "calendar",
+     "tools": [
+      {
+       "ok": true,
+       "name": "geocode_location",
+       "input": {
+        "query": "Austin, TX"
+       },
+       "output": {
+        "name": "Austin",
+        "region": "Texas",
+        "country": "United States",
+        "latitude": 30.26715,
+        "timezone": "America/Chicago",
+        "longitude": -97.74306,
+        "country_code": "US"
+       }
+      },
+      {
+       "ok": true,
+       "name": "get_public_holidays",
+       "input": {
+        "date": "2027-01-29",
+        "country": "US"
+       },
+       "output": []
+      }
+     ],
+     "details": {
+      "advice": "This is a pretty good date overall: no nearby holiday conflict and it’s not near a major semester crunch point. If you can, schedule it earlier in the day or make it hybrid/flexible to catch students before weekend plans start.",
+      "holidays": [],
+      "conflicts": [
+       "Friday can reduce turnout a bit, especially if the event depends on daytime campus spaces or students who leave town for the weekend."
+      ]
+     },
+     "summary": "Friday 2027-01-29: no public holidays within a week. Risk: low."
+    },
+    {
+     "ms": 4509,
+     "agent": "budget",
+     "details": {
+      "allocation": [
+       {
+        "amount": 900,
+        "category": "Food & beverages (including midnight pizza run)"
+       },
+       {
+        "amount": 250,
+        "category": "AV, Wi‑Fi, power strips, charging support"
+       },
+       {
+        "amount": 150,
+        "category": "Workshop materials, printing, badges, signage"
+       },
+       {
+        "amount": 200,
+        "category": "Mentor/judge hospitality"
+       },
+       {
+        "amount": 150,
+        "category": "Marketing, registration, and communications"
+       },
+       {
+        "amount": 100,
+        "category": "Sponsor booths and demo setup"
+       },
+       {
+        "amount": 300,
+        "category": "Overnight operations, security, and facilities support"
+       },
+       {
+        "amount": 450,
+        "category": "Contingency / indoor backup & weather-readiness"
+       }
+      ],
+      "savings_ideas": [
+       "Ask sponsors or local pizza shops to cover the midnight meal and provide in-kind snacks/drinks.",
+       "Request university IT/facilities support for Wi‑Fi, extra power strips, and overnight security so cash can go to food and judging instead of rentals.",
+       "Reuse existing campus tables, signs, extension cords, and AV gear, and keep workshops low-cost with volunteer speakers and digital materials."
+      ]
+     },
+     "summary": "$13.89/attendee vs ~$23 benchmark → lean. At $13.89 per attendee ($2,500 for about 180 people), this budget is well below the roughly $23 per attendee benchmark for a comfortable Academic/Tech hackathon. Because the event is overnight and needs strong Wi‑Fi, enough power, food, and an indoor/after-hours backup plan, outside sponsorship or in-kind support would materially improve the experience."
+    },
+    {
+     "ms": 4499,
+     "agent": "sponsor",
+     "details": {
+      "targets": [
+       {
+        "why": "A hackathon directly supports student learning, recruiting, and hands-on technical engagement, so an academic sponsor is a natural fit for venue, workshop, or catering support.",
+        "type": "University engineering or computer science department/campus innovation center",
+        "ask_usd": 700,
+        "example": "a campus engineering department, CS department, or student innovation hub"
+       },
+       {
+        "why": "These sponsors often want visibility with student builders, booth access, and recruiting opportunities at technical events like hackathons.",
+        "type": "Local tech company or startup with an office near campus",
+        "ask_usd": 600,
+        "example": "a nearby software company, hardware startup, IT consulting firm, or cloud/AI vendor"
+       },
+       {
+        "why": "This is a student-centered event with broad participation, and alumni/student government support can help close the gap while strengthening campus community.",
+        "type": "Student government fund or alumni association/college alumni network",
+        "ask_usd": 340,
+        "example": "the student government programming fund or an alumni chapter supporting student events"
+       }
+      ]
+     },
+     "summary": "Funding gap ≈ $1640. Targets: University engineering or computer science department/campus innovation center, Local tech company or startup with an office near campus, Student government fund or alumni association/college alumni network. Outreach email drafted."
+    },
+    {
+     "ms": 62669,
+     "pass": 1,
+     "agent": "scheduler",
+     "details": {
+      "phases": [
+       "Phase 1: 4 Weeks Out (5)",
+       "Phase 2: 3 Weeks Out (4)",
+       "Phase 3: 2 Weeks Out (4)",
+       "Phase 4: 1 Week Out (5)",
+       "Phase 5: Wrap-Up (4)"
+      ]
+     },
+     "summary": "22 tasks in 5 phases, 10-slot run of show, 5 approvals, 6 roles."
+    },
+    {
+     "ms": 2089,
+     "pass": 1,
+     "agent": "reviewer",
+     "details": {
+      "issues": []
+     },
+     "summary": "Approved (score 9/10). The plan is well structured across prep phases, event-day operations, and wrap-up, with all major event needs assigned and scheduled. Main residual risk is execution under a lean budget, especially around sponsor fundraising and overnight operational coverage, but the plan does address those areas."
+    }
+   ],
+   "engine": "langgraph",
+   "skipped": [
+    "weather"
+   ],
+   "branches": [
+    {
+     "at": "brief",
+     "to": "calendar",
+     "label": "indoor event",
+     "reason": "Held indoors, so the weather check is skipped."
+    },
+    {
+     "at": "budget",
+     "to": "sponsor",
+     "label": "lean budget",
+     "reason": "$13.89 per attendee is below the ~$23 benchmark, so a sponsorship plan is added."
+    },
+    {
+     "at": "reviewer",
+     "to": "end",
+     "label": "approved",
+     "reason": "The plan covers the risks the other agents found."
+    }
+   ],
+   "sponsorship": {
+    "targets": [
+     {
+      "why": "A hackathon directly supports student learning, recruiting, and hands-on technical engagement, so an academic sponsor is a natural fit for venue, workshop, or catering support.",
+      "type": "University engineering or computer science department/campus innovation center",
+      "ask_usd": 700,
+      "example": "a campus engineering department, CS department, or student innovation hub"
+     },
+     {
+      "why": "These sponsors often want visibility with student builders, booth access, and recruiting opportunities at technical events like hackathons.",
+      "type": "Local tech company or startup with an office near campus",
+      "ask_usd": 600,
+      "example": "a nearby software company, hardware startup, IT consulting firm, or cloud/AI vendor"
+     },
+     {
+      "why": "This is a student-centered event with broad participation, and alumni/student government support can help close the gap while strengthening campus community.",
+      "type": "Student government fund or alumni association/college alumni network",
+      "ask_usd": 340,
+      "example": "the student government programming fund or an alumni chapter supporting student events"
+     }
+    ],
+    "email_body": "Hi [Sponsor name],\n\nI’m [Your name] from the student club organizing Fall Hackathon 2026 on January 29–30 in the Engineering Building. We’re bringing together about 180 student hackers for a 24-hour event with workshops, mentoring, demos, and sponsor booths.\n\nWe’d love to partner with you as a sponsor to help cover event costs like food, Wi‑Fi/power support, and mentor/judge hospitality. In return, we can offer recognition on event materials, booth space, and visibility with engaged student participants.\n\nWould you be open to discussing a sponsorship of $[amount]?\n\nThank you for considering it, and I’d be happy to share more details.\n\nBest,\n[Your name]",
+    "email_subject": "Sponsorship request: Fall Hackathon 2026 at [University Name]",
+    "funding_gap_usd": 1640
+   }
+  },
+  "roles": [
+   {
+    "member": "Maya Lin",
+    "responsibility": "Program approvals, judges, sponsors, kickoff"
+   },
+   {
+    "member": "Devon Taylor",
+    "responsibility": "Volunteer shifts, training, teardown"
+   },
+   {
+    "member": "Liam Zhang",
+    "responsibility": "Promo, registration, signage, attendee comms"
+   },
+   {
+    "member": "Samira Khan",
+    "responsibility": "Food, hospitality, snacks, midnight pizza"
+   },
+   {
+    "member": "Chloe Vance",
+    "responsibility": "Budget, sponsor asks, receipts, closeout"
+   },
+   {
+    "member": "Jordan Reed",
+    "responsibility": "Venue access, floor plan, AV, overnight ops"
+   }
+  ],
+  "budget": [
+   {
+    "category": "Food & beverages (including midnight pizza run)",
+    "amount": 900
+   },
+   {
+    "category": "AV, Wi‑Fi, power strips, charging support",
+    "amount": 250
+   },
+   {
+    "category": "Workshop materials, printing, badges, signage",
+    "amount": 150
+   },
+   {
+    "category": "Mentor/judge hospitality",
+    "amount": 200
+   },
+   {
+    "category": "Marketing, registration, and communications",
+    "amount": 150
+   },
+   {
+    "category": "Sponsor booths and demo setup",
+    "amount": 100
+   },
+   {
+    "category": "Overnight operations, security, and facilities support",
+    "amount": 300
+   },
+   {
+    "category": "Contingency / indoor backup & weather-readiness",
+    "amount": 450
+   }
+  ],
+  "timeline": [
+   {
+    "time": "15:00",
+    "title": "Setup and load-in",
+    "detail": "Tables, sponsor booths, check-in desk, signage, power strips, and charging stations go in.",
+    "location": "Engineering Building, Hall B"
+   },
+   {
+    "time": "16:30",
+    "title": "AV, Wi-Fi, and power test",
+    "detail": "Test projectors, microphones, network access, and outlet distribution across the room.",
+    "location": "Hall B"
+   },
+   {
+    "time": "17:30",
+    "title": "Volunteer briefing",
+    "detail": "Review roles, escalation contacts, runner routes, and the cleanup plan before doors open.",
+    "location": "Hall B"
+   },
+   {
+    "time": "18:00",
+    "title": "Doors open and attendee check-in",
+    "detail": "Welcome teams, hand out badges, and open sponsor booths.",
+    "location": "Hall B lobby"
+   },
+   {
+    "time": "18:30",
+    "title": "Opening remarks and workshop 1",
+    "detail": "Kick off the hackathon, explain rules, and start the first keynote workshop; mentor office hours open.",
+    "location": "Main workshop area"
+   },
+   {
+    "time": "00:00",
+    "title": "Midnight pizza run",
+    "detail": "Serve pizza, reset snacks and water, and do a quick overnight room check.",
+    "location": "Hospitality table"
+   },
+   {
+    "time": "08:00",
+    "title": "Workshop 3 and breakfast reset",
+    "detail": "Refresh food, restart the program, and give teams a quick progress check.",
+    "location": "Hall B"
+   },
+   {
+    "time": "13:00",
+    "title": "Demo prep and judge briefing",
+    "detail": "Set up demo tables, confirm judging flow, and give judges the scoring rubric.",
+    "location": "Demo area"
+   },
+   {
+    "time": "16:30",
+    "title": "Final demos and judging",
+    "detail": "Teams present projects, judges score entries, and sponsor booths stay open for networking.",
+    "location": "Demo area and sponsor booths"
+   },
+   {
+    "time": "18:00",
+    "title": "Awards, closing remarks, and teardown",
+    "detail": "Announce winners, thank sponsors and volunteers, then begin full room cleanup and load-out.",
+    "location": "Hall B"
+   }
+  ],
+  "phases": [
+   {
+    "name": "Phase 1: 4 Weeks Out",
+    "subtitle": "Lock venue, funding, and event assumptions",
+    "tasks": [
+     {
+      "title": "Confirm Hall B overnight booking",
+      "detail": "Verify Fri 6 PM to Sat 6 PM access, load-in/out windows, keys, and lock-up for Engineering Building, Hall B.",
+      "member": "Jordan Reed",
+      "days_before": 28,
+      "priority": true
+     },
+     {
+      "title": "Set planning assumptions for teams and booths",
+      "detail": "Confirm target headcount, estimated team count, judge/mentor slots, and how many sponsor booths fit in Hall B.",
+      "member": null,
+      "days_before": 27,
+      "priority": true
+     },
+     {
+      "title": "Draft sponsor packet and ask levels",
+      "detail": "Build a lean sponsor one-pager with cash and in-kind asks to cover the $1,640 gap.",
+      "member": "Chloe Vance",
+      "days_before": 26,
+      "priority": true
+     },
+     {
+      "title": "Start sponsor outreach",
+      "detail": "Contact the engineering/CS department, innovation center, local tech firms, and alumni network with the sponsor pitch.",
+      "member": null,
+      "days_before": 25,
+      "priority": true
+     },
+     {
+      "title": "Request AV, Wi-Fi, and power support",
+      "detail": "Ask for network load support, projector/mic setup, and guidance on safe power-strip distribution for every team.",
+      "member": "Jordan Reed",
+      "days_before": 24,
+      "priority": true
+     }
+    ]
+   },
+   {
+    "name": "Phase 2: 3 Weeks Out",
+    "subtitle": "Recruit people and open registration",
+    "tasks": [
+     {
+      "title": "Launch registration and promo",
+      "detail": "Open sign-up and push Friday-evening timing in posts and emails so weekday students see it before weekend plans.",
+      "member": "Liam Zhang",
+      "days_before": 21,
+      "priority": true
+     },
+     {
+      "title": "Recruit judges, mentors, and speakers",
+      "detail": "Secure workshop leads, mentor office-hours volunteers, and judges for the final demo session.",
+      "member": null,
+      "days_before": 21,
+      "priority": true
+     },
+     {
+      "title": "Build volunteer sign-up",
+      "detail": "Create the volunteer roster for check-in, runner, sponsor desk, mentor desk, and cleanup shifts.",
+      "member": "Devon Taylor",
+      "days_before": 20,
+      "priority": true
+     },
+     {
+      "title": "Confirm midnight food plan",
+      "detail": "Lock the pizza vendor, delivery timing, water, coffee/caffeine, and allergy notes for the overnight run.",
+      "member": "Samira Khan",
+      "days_before": 19,
+      "priority": true
+     }
+    ]
+   },
+   {
+    "name": "Phase 3: 2 Weeks Out",
+    "subtitle": "Finalize rooms, signage, and demo logistics",
+    "tasks": [
+     {
+      "title": "Draft the Hall B floor plan",
+      "detail": "Map sponsor booths, demo tables, charging zones, aisles, and a clear path for food delivery and load-out.",
+      "member": "Jordan Reed",
+      "days_before": 14,
+      "priority": true
+     },
+     {
+      "title": "Order print and check-in materials",
+      "detail": "Produce badges, signage, team numbers, check-in sheets, and room signs for the workshops and demos.",
+      "member": "Liam Zhang",
+      "days_before": 13,
+      "priority": true
+     },
+     {
+      "title": "Write judging rubric and demo flow",
+      "detail": "Set the judging criteria, scoring sheet, and the order for final project demos so mentors know the format.",
+      "member": null,
+      "days_before": 12,
+      "priority": true
+     },
+     {
+      "title": "Collect sponsor booth needs",
+      "detail": "Confirm which sponsors are bringing banners, laptops, swag, or extra power needs and assign table locations.",
+      "member": "Chloe Vance",
+      "days_before": 11,
+      "priority": true
+     }
+    ]
+   },
+   {
+    "name": "Phase 4: 1 Week Out",
+    "subtitle": "Confirm every moving part before doors open",
+    "tasks": [
+     {
+      "title": "Train volunteers on event-day roles",
+      "detail": "Run a short briefing for check-in, mentor desk, runner chain, overnight coverage, and teardown responsibilities.",
+      "member": "Devon Taylor",
+      "days_before": 7,
+      "priority": true
+     },
+     {
+      "title": "Reconfirm overnight access and safety",
+      "detail": "Check with Facilities and Campus Safety on unlock/lock times, emergency contacts, and after-hours coverage.",
+      "member": "Jordan Reed",
+      "days_before": 5,
+      "priority": true
+     },
+     {
+      "title": "Send final attendee briefing",
+      "detail": "Email the schedule, map, arrival instructions, what to bring, and a reminder that the event starts Friday evening.",
+      "member": "Liam Zhang",
+      "days_before": 4,
+      "priority": true
+     },
+     {
+      "title": "Finalize hospitality inventory",
+      "detail": "Count pizza, snacks, water, coffee, plates, napkins, and any mentor/judge hospitality items.",
+      "member": "Samira Khan",
+      "days_before": 3,
+      "priority": true
+     },
+     {
+      "title": "Prepare finance and receipt tracker",
+      "detail": "Set up the on-site expense log, receipt folder, and payment tracker so expenses stay within the lean budget.",
+      "member": "Chloe Vance",
+      "days_before": 2,
+      "priority": true
+     }
+    ]
+   },
+   {
+    "name": "Phase 5: Wrap-Up",
+    "subtitle": "Close out vendors, records, and thank-yous",
+    "tasks": [
+     {
+      "title": "Return borrowed gear and clear storage",
+      "detail": "Collect leftover supplies, return borrowed equipment, and make sure volunteer materials are back in storage.",
+      "member": "Devon Taylor",
+      "days_before": -1,
+      "priority": true
+     },
+     {
+      "title": "Reconcile the event budget",
+      "detail": "Match receipts to the budget, pay vendors, and close out the final spending totals.",
+      "member": "Chloe Vance",
+      "days_before": -2,
+      "priority": true
+     },
+     {
+      "title": "Send follow-ups and feedback form",
+      "detail": "Thank sponsors, judges, mentors, and volunteers; send a short post-event feedback form to attendees.",
+      "member": null,
+      "days_before": -3,
+      "priority": true
+     },
+     {
+      "title": "Submit venue closeout notes",
+      "detail": "Report any room issues, lost-and-found items, and cleanup concerns back to the building contact.",
+      "member": "Jordan Reed",
+      "days_before": -1,
+      "priority": true
+     }
+    ]
+   }
+  ],
+  "compliance": [
+   {
+    "title": "Venue reservation and overnight access",
+    "detail": "Confirm the building reservation, after-hours entry, lock/unlock times, load-in access, and who can let people in after hours.",
+    "reference": "Facilities / Building Management"
+   },
+   {
+    "title": "Student event approval and capacity review",
+    "detail": "Check whether the club needs an event registration, advisor presence, room capacity sign-off, or a special-event review for 180 attendees and overnight use.",
+    "reference": "Student Activities / Campus Events"
+   },
+   {
+    "title": "IT and AV support request",
+    "detail": "Verify Wi-Fi capacity, projector/microphone support, and whether extra network or power support is needed for a room full of laptops.",
+    "reference": "Campus IT / AV Services"
+   },
+   {
+    "title": "Food and outside delivery approval",
+    "detail": "Confirm outside pizza delivery rules, food drop-off timing, allergen handling, and trash disposal expectations for the overnight event.",
+    "reference": "Dining Services / Catering"
+   },
+   {
+    "title": "Safety and overnight coverage",
+    "detail": "Check emergency procedures, fire exits, late-night contact numbers, and whether security or medical coverage is needed for an overnight student event.",
+    "reference": "Campus Safety / University Police"
+   }
+  ]
+ }
+]

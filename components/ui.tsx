@@ -52,13 +52,30 @@ export function AvatarStack({ names, max = 3 }: { names: string[]; max?: number 
   );
 }
 
-export function Logo({ href = "/" }: { href?: string }) {
+/** The Evently mark: a calendar with a coral spark. Matches app/icon.svg. */
+export function LogoMark({ size = 32 }: { size?: number }) {
   return (
-    <Link href={href} className="flex items-center gap-2">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-container text-white">
-        <Icon name="event_available" className="text-[20px]" fill />
-      </span>
-      <span className="font-display text-headline-sm tracking-tight">Evently</span>
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden className="shrink-0">
+      <defs>
+        <linearGradient id="evently-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#4F46E5" />
+          <stop offset="1" stopColor="#6F3DD9" />
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="18" fill="url(#evently-g)" />
+      <rect x="15" y="19" width="30" height="28" rx="6" fill="none" stroke="#fff" strokeWidth="4" />
+      <path d="M15 28h30" stroke="#fff" strokeWidth="4" />
+      <path d="M23 14v9M37 14v9" stroke="#fff" strokeWidth="4" strokeLinecap="round" />
+      <path d="M46 34c.9 4.6 2.9 6.6 7.5 7.5-4.6.9-6.6 2.9-7.5 7.5-.9-4.6-2.9-6.6-7.5-7.5 4.6-.9 6.6-2.9 7.5-7.5z" fill="#FD651E" stroke="#FD651E" strokeWidth="2.5" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function Logo({ href = "/", light = false }: { href?: string; light?: boolean }) {
+  return (
+    <Link href={href} className="flex items-center gap-2" aria-label="Evently home">
+      <LogoMark />
+      <span className={`font-display text-headline-sm font-bold tracking-tight ${light ? "text-white" : ""}`}>Evently</span>
     </Link>
   );
 }
