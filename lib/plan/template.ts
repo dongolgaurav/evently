@@ -245,5 +245,5 @@ export function buildTemplatePlan(input: PlanInput): Plan {
         ? `Nobody on the team is clearly covering ${gaps.join(" or ")}, so those tasks were spread across everyone.`
         : "Each area has an owner; check the dates against your campus's approval lead times.");
 
-  return { summary, roles, budget, phases, timeline: timeline.sort((a, b) => (a.time < b.time ? -1 : 1)), compliance };
+  return { summary, roles, budget, phases, timeline, compliance };
 }

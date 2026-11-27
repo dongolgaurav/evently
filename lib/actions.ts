@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
 import { CLUB_COOKIE, getContext, getUser } from "./data";
+import { seedDemo } from "./demo/seed";
 import { TASK_CAP, type FundingSource, type Member, type Task } from "./types";
 
 /**
@@ -390,16 +391,27 @@ export async function deleteBudgetItem(fd: FormData) {
 // ---------------------------------------------------------------- run of show
 export async function addTimelineItem(fd: FormData) {
   const ctx = await getContext();
-  if (!str(fd, "title") || !/^\d{2}:\d{2}/.test(str(fd, "start_time"))) return;
+  const start = str(fd, "start_time");
+  if (!str(fd, "title") || !/^\d{2}:\d{2}/.test(start)) return;
+  const eventId = str(fd, "event_id");
+  // Slot it in by time relative to the first item, so overnight schedules stay in order.
+  const { data } = await ctx.supabase.from("timeline_items").select("id, start_time, position").eq("event_id", eventId).order("position");
+  const items = (data ?? []) as { id: string; start_time: string; position: number }[];
+  const mins = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+  const anchor = items.length ? mins(items[0]!.start_time) : mins(start);
+  const key = (t: string) => (mins(t) - anchor + 1440) % 1440;
+  const at = items.filter((t) => key(t.start_time) <= key(start)).length;
+  await Promise.all(items.slice(at).map((t, k) => ctx.supabase.from("timeline_items").update({ position: at + k + 1 }).eq("id", t.id)));
   check(
     (
       await ctx.supabase.from("timeline_items").insert({
         club_id: ctx.club.id,
-        event_id: str(fd, "event_id"),
-        start_time: str(fd, "start_time"),
+        event_id: eventId,
+        start_time: start,
         title: str(fd, "title"),
         detail: opt(fd, "detail"),
         location: opt(fd, "location"),
+        position: at,
       })
     ).error,
   );
@@ -493,4 +505,41 @@ export async function removeMember(fd: FormData) {
   check((await ctx.supabase.from("members").delete().eq("id", id).eq("club_id", ctx.club.id)).error);
   if (data) await log(ctx, `removed ${data.full_name} from the roster`);
   refresh();
+}
+
+// ---------------------------------------------------------------- demo club
+/** Onboarding shortcut: create a club already filled with sample events. */
+export async function createDemoClub(): Promise<FormState> {
+  const { supabase, user } = await getUser();
+  const name = String(user.user_metadata?.full_name ?? "") || user.email!.split("@")[0]!;
+  const { data: clubId, error } = await supabase.rpc("create_club", {
+    p_name: "Campus Tech Society",
+    p_full_name: "Campus Technology Society (demo)",
+    p_term: "Fall 2026",
+    p_title: "Club President",
+    p_member_name: name,
+  });
+  if (error) return { error: error.message };
+  const { data: me } = await supabase.from("members").select("id, full_name").eq("club_id", clubId).eq("user_id", user.id).single();
+  try {
+    await seedDemo(supabase, String(clubId), me as { id: string; full_name: string });
+  } catch (e) {
+    return { error: `The demo club was created but sample data failed to load: ${e instanceof Error ? e.message : e}` };
+  }
+  (await cookies()).set(CLUB_COOKIE, String(clubId), COOKIE_OPTS);
+  return { redirect: "/dashboard" };
+}
+
+/** Empty-dashboard shortcut: add sample events and teammates to the current club. */
+export async function loadDemoData(): Promise<FormState> {
+  const ctx = await getContext();
+  if (!ctx.me.is_admin) return { error: "Only club admins can load demo data." };
+  const { count } = await ctx.supabase.from("events").select("id", { count: "exact", head: true }).eq("club_id", ctx.club.id);
+  if (count) return { error: "Demo data can only be added to a club with no events yet." };
+  try {
+    await seedDemo(ctx.supabase, ctx.club.id, ctx.me);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+  return { redirect: "/dashboard" };
 }

@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { getUser } from "@/lib/data";
-import { createClub } from "@/lib/actions";
+import { createClub, createDemoClub } from "@/lib/actions";
 import { StateForm, SubmitButton } from "@/components/client";
-import { Logo } from "@/components/ui";
+import { Icon, Logo } from "@/components/ui";
 
 export const metadata = { title: "Set up your club" };
 
@@ -56,6 +56,15 @@ async function Onboarding() {
         <SubmitButton className="btn btn-primary w-full" pendingText="Creating workspace…">
           Create workspace
         </SubmitButton>
+      </StateForm>
+      <div className="my-5 flex items-center gap-3 text-body-sm text-on-surface-variant">
+        <span className="h-px flex-1 bg-slate-200" /> or <span className="h-px flex-1 bg-slate-200" />
+      </div>
+      <StateForm action={createDemoClub} className="space-y-2">
+        <SubmitButton className="btn btn-soft w-full" pendingText="Setting up the demo club…">
+          <Icon name="rocket_launch" className="text-[18px] text-tertiary" /> Explore with a demo club
+        </SubmitButton>
+        <p className="text-center text-body-sm text-on-surface-variant">A sample board, three planned events (two by the AI agents) and live RSVPs.</p>
       </StateForm>
       <form action="/auth/signout" method="post" className="mt-4 text-center">
         <button className="text-body-sm text-on-surface-variant underline">Sign out ({user.email})</button>

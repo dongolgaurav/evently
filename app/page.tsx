@@ -1,4 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
+import { CATEGORY_IMAGES, IMAGES } from "@/lib/images";
+import { TEMPLATES } from "@/lib/templates";
 import { Icon, Logo, Progress } from "@/components/ui";
 import { LandingDemo } from "@/components/landing-demo";
 
@@ -102,59 +105,42 @@ export default function LandingPage() {
             <p className="mt-4 text-body-sm text-on-surface-variant">Free while in beta. No credit card.</p>
           </div>
 
-          <div className="card p-6 shadow-lift" aria-label="Example event plan">
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-fixed text-primary">
-                  <Icon name="terminal" className="text-[22px]" />
-                </span>
-                <div>
-                  <div className="font-display text-headline-sm">Fall Campus Hackathon</div>
-                  <div className="text-body-sm text-on-surface-variant">Student Union Ballroom • 150 hackers</div>
+          <div className="relative">
+            <Image src={IMAGES.hero} alt="Student club organisers planning an event together around a wall calendar" priority placeholder="blur" sizes="(min-width: 1024px) 560px, 100vw" className="h-auto w-full rounded-2xl shadow-xl" />
+            <div className="absolute -bottom-6 left-4 flex items-center gap-3 rounded-2xl bg-white p-3 pr-4 shadow-lift sm:-left-6">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-container to-tertiary-container text-white">
+                <Icon name="hub" className="text-[22px]" />
+              </span>
+              <div>
+                <div className="text-label-md font-semibold">7 AI agents</div>
+                <div className="text-body-sm text-on-surface-variant">Weather, holidays, budget, sponsors</div>
+              </div>
+            </div>
+            <div className="absolute -top-5 right-4 hidden items-center gap-2 rounded-2xl bg-white p-3 pr-4 shadow-lift sm:flex">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                <Icon name="how_to_reg" className="text-[20px]" />
+              </span>
+              <div>
+                <div className="text-label-md font-semibold">RSVPs & QR check-in</div>
+                <div className="text-body-sm text-on-surface-variant">No ticketing fees</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 pt-8 pb-16 sm:px-6">
+          <p className="mb-6 text-center text-label-sm tracking-wider text-on-surface-variant uppercase">Templates for the events clubs actually run</p>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+            {TEMPLATES.slice(0, 5).map((t) => (
+              <Link key={t.key} href="/signup" className="group relative overflow-hidden rounded-2xl shadow-card">
+                <Image src={CATEGORY_IMAGES[t.category] ?? IMAGES.hero} alt="" placeholder="blur" sizes="(min-width: 768px) 220px, 50vw" className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent" />
+                <div className="absolute right-3 bottom-3 left-3 text-white">
+                  <div className="font-display font-bold">{t.name}</div>
+                  <div className="text-body-sm text-white/80">~{t.attendees} people</div>
                 </div>
-              </div>
-              <span className="chip chip-green">78% ready</span>
-            </div>
-            <div className="mt-5 text-label-sm tracking-wider text-on-surface-variant uppercase">Roles & workload</div>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              {[["President", "4 tasks", "bg-emerald-500"], ["VP Logistics", "6 tasks", "bg-secondary-container"], ["Treasurer", "3 tasks", "bg-emerald-500"]].map(([r, n, c]) => (
-                <div key={r} className="rounded-lg bg-surface-container-low p-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-label-sm">{r}</span>
-                    <span className={`h-2 w-2 rounded-full ${c}`} />
-                  </div>
-                  <div className="text-body-sm text-on-surface-variant">{n}</div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 rounded-xl bg-surface-container-low p-3">
-              <div className="mb-2 flex items-baseline justify-between">
-                <span>
-                  <b className="font-display text-headline-sm">$1,980</b> <span className="text-on-surface-variant">/ $2,500 spent</span>
-                </span>
-                <span className="text-label-sm text-emerald-700">$520 remaining</span>
-              </div>
-              <div className="flex h-2 gap-0.5 overflow-hidden rounded-full bg-surface-container-high">
-                <div className="w-[34%] bg-primary" />
-                <div className="w-[25%] bg-tertiary-container" />
-                <div className="w-[14%] bg-secondary-container" />
-                <div className="w-[6%] bg-emerald-500" />
-              </div>
-            </div>
-            <ul className="mt-4 space-y-2">
-              {[["Secure the ballroom booking", "4 weeks out", true], ["Order hoodies and sponsor stickers", "2 weeks out", false], ["Lock in midnight pizza and dietary options", "1 week out", false]].map(([t, w, d]) => (
-                <li key={String(t)} className="flex items-center justify-between gap-2 rounded-lg bg-surface-container-low p-2 text-body-sm">
-                  <span className="flex items-center gap-2">
-                    <span className={`flex h-4 w-4 items-center justify-center rounded ${d ? "bg-primary-container text-white" : "border border-slate-300 bg-white"}`}>
-                      {d && <Icon name="check" className="text-[12px]" />}
-                    </span>
-                    <span className={d ? "text-on-surface-variant line-through" : ""}>{t}</span>
-                  </span>
-                  <span className="chip chip-slate">{w}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-3 text-center text-badge-xs text-on-surface-variant">Illustrative example</p>
+              </Link>
+            ))}
           </div>
         </section>
 
